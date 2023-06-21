@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABC
-from game import Disc
+from connect_4 import game
 
 
 class Player(ABC):
@@ -26,4 +26,4 @@ class HumanAgent(Player):
         super(HumanAgent, self).__init__(name, color)
 
     def drop_disc(self, slot) -> (int, int):
-        self.board.slots[slot].fill(Disc(self.color))
+        self.board.slots[slot].fill(game.Disc(self.color))

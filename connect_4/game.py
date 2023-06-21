@@ -1,4 +1,4 @@
-from player import AIAgent, HumanAgent
+from .player import AIAgent, HumanAgent
 
 
 class Disc:
