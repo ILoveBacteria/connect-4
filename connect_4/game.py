@@ -40,4 +40,5 @@ class Game:
         self.turn = 0
 
     def drop_disc(self, slot: int):
-        pass
+        self.players[self.turn].drop_disc(slot)
+        self.turn = ~self.turn
