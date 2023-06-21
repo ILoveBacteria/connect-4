@@ -14,6 +14,13 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual('red', game.board.slots[1].holes[0].color)
         self.assertEqual('yellow', game.board.slots[1].holes[1].color)
 
+    def test_board2(self):
+        game = Game(HumanAgent('p1', 'red'), HumanAgent('p2', 'yellow'), depth=3)
+        game.drop_disc(1)
+        game.drop_disc(1)
+        game.drop_disc(1)
+        self.assertRaises(IndexError, game.drop_disc, 1)
+
 
 if __name__ == '__main__':
     unittest.main()
