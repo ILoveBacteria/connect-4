@@ -23,7 +23,7 @@ class Slot:
 
     def fill(self, disc: Disc) -> int:
         if self.__len__() == self.max_depth:
-            raise ValueError('The slot is full!')
+            raise IndexError('The slot is full!')
         i = self.holes.index(None)
         self.holes[i] = disc
         return i
