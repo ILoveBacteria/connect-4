@@ -21,6 +21,23 @@ class MyTestCase(unittest.TestCase):
         game.drop_disc(1)
         self.assertRaises(IndexError, game.drop_disc, 1)
 
+    def test_win_vertical1(self):
+        game = Game(HumanAgent('p1', 'red'), HumanAgent('p2', 'yellow'))
+        for i in range(6):
+            self.assertFalse(game.drop_disc(i % 2))
+        self.assertTrue(game.drop_disc(0))
+
+    def test_win_vertical2(self):
+        game = Game(HumanAgent('p1', 'red'), HumanAgent('p2', 'yellow'), depth=10)
+        self.assertFalse(game.drop_disc(0))
+        self.assertFalse(game.drop_disc(1))
+        self.assertFalse(game.drop_disc(0))
+        self.assertFalse(game.drop_disc(0))
+        for i in range(5):
+            self.assertFalse(game.drop_disc(i % 2))
+        self.assertFalse(game.drop_disc(2))
+        self.assertTrue(game.drop_disc(0))
+
 
 if __name__ == '__main__':
     unittest.main()
