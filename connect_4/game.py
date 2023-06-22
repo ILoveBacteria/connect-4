@@ -1,9 +1,11 @@
-from .player import AIAgent, HumanAgent
+from connect_4 import player
 
 
 class Disc:
-    def __init__(self, color: str):
+    def __init__(self, color: str, row=None, column=None):
         self.color = color
+        self.row = row
+        self.column = column
 
 
 class Board:
@@ -30,19 +32,19 @@ class Slot:
 
 
 class Game:
-    def __init__(self, player1: HumanAgent, player2=None, slots=7, depth=6):
+    def __init__(self, player1: player.HumanAgent, player2=None, slots=7, depth=6):
         self.board = Board(slots, depth)
         if player2 is None:
-            player2 = AIAgent()
+            player2 = player.AIAgent()
         player1.board = self.board
         player2.board = self.board
         self.players = (player1, player2)
         self.turn = 0
 
-    def drop_disc(self, slot: int) -> (int, int, bool):
-        x, y = self.players[self.turn].drop_disc(slot)
+    def drop_disc(self, slot: int) -> (Disc, bool):
+        disc = self.players[self.turn].drop_disc(slot)
         self.turn = ~self.turn
-        return x, y, self.win_logic()
+        return disc, self.win_logic()
 
     def win_logic(self):
         # Vertical

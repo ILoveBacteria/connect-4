@@ -25,6 +25,8 @@ class HumanAgent(Player):
     def __init__(self, name: str, color: str):
         super(HumanAgent, self).__init__(name, color)
 
-    def drop_disc(self, slot) -> (int, int):
-        y = self.board.slots[slot].fill(game.Disc(self.color))
-        return slot, y
+    def drop_disc(self, slot):
+        disc = game.Disc(self.color, column=slot)
+        y = self.board.slots[slot].fill(disc)
+        disc.row = y
+        return disc
