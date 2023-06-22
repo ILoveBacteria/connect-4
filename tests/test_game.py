@@ -29,7 +29,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_win_vertical2(self):
         game = Game(HumanAgent('p1', 'red'), HumanAgent('p2', 'yellow'), depth=10)
-        self.assertFalse(game.drop_disc(0))
+        self.assertFalse(game.drop_disc(0))  # winner
         self.assertFalse(game.drop_disc(1))
         self.assertFalse(game.drop_disc(0))
         self.assertFalse(game.drop_disc(0))
@@ -37,6 +37,17 @@ class MyTestCase(unittest.TestCase):
             self.assertFalse(game.drop_disc(i % 2))
         self.assertFalse(game.drop_disc(2))
         self.assertTrue(game.drop_disc(0))
+
+    def test_win_horizontal(self):
+        game = Game(HumanAgent('p1', 'red'), HumanAgent('p2', 'yellow'))
+        self.assertFalse(game.drop_disc(0))  # winner
+        self.assertFalse(game.drop_disc(1))
+        self.assertFalse(game.drop_disc(2))  # winner
+        for i in range(3, 5):
+            self.assertFalse(game.drop_disc(i % 3))
+            self.assertFalse(game.drop_disc(i))  # winner
+        self.assertFalse(game.drop_disc(0))
+        self.assertTrue(game.drop_disc(5))
 
 
 if __name__ == '__main__':
