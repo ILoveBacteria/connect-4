@@ -7,14 +7,12 @@ export class Hole extends React.Component {
     }
 
     render() {
-        let css_class = ['hole']
-        // if (this.props.color == null) {
-        //     css_class.push('empty_hole')
-        // } else {
-        //     css_class.push(`${this.props.color}_hole`)
-        // }
+        let style = {
+            'backgroundColor': this.props.color
+        }
+
         return (
-            <div className={css_class.join(' ')}
+            <div className="hole" style={style}
                  onClick={(e) => this.props.drop_disc(this.props.column)}>
                 {this.props.row}, {this.props.column}, {this.props.color}
             </div>

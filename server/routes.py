@@ -14,5 +14,5 @@ def game_play():
 
 @app.route('/api/drop_disc/<int:slot>')
 def drop_disc(slot):
-    x, y, win = game.drop_disc(slot)
-    return jsonify({'position': (x, y)})
+    disc, win = game.drop_disc(slot)
+    return jsonify(vars(disc))
