@@ -1,5 +1,5 @@
-from server import app
-from flask import render_template
+from server import app, game
+from flask import render_template, jsonify
 
 
 @app.route('/')
@@ -8,5 +8,11 @@ def hello_world():  # put application's code here
 
 
 @app.route('/game')
-def game():
+def game_play():
     return render_template('game.html')
+
+
+@app.route('/api/drop_disc/<int:slot>')
+def drop_disc(slot):
+    x, y, win = game.drop_disc(slot)
+    return jsonify({'position': (x, y)})
