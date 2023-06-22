@@ -39,10 +39,10 @@ class Game:
         self.players = (player1, player2)
         self.turn = 0
 
-    def drop_disc(self, slot: int):
-        self.players[self.turn].drop_disc(slot)
+    def drop_disc(self, slot: int) -> (int, int, bool):
+        x, y = self.players[self.turn].drop_disc(slot)
         self.turn = ~self.turn
-        return self.win_logic()
+        return x, y, self.win_logic()
 
     def win_logic(self):
         # Vertical
