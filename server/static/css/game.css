@@ -1,0 +1,31 @@
+* {
+    box-sizing: border-box;
+}
+
+div#app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#board {
+    background-color: lightblue;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-radius: 1rem;
+    row-gap: 2rem;
+    column-gap: 2rem;
+    justify-items: center;
+    padding: 1rem;
+    box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
+}
+
+.hole {
+    border-radius: 100%;
+    background-color: white;
+    width: 4rem;
+    height: 4rem;
+    box-shadow: rgba(0, 0, 0, 0.3) 0 20px 36px -20px inset;
+
+}
