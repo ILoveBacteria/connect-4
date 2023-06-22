@@ -42,3 +42,36 @@ class Game:
     def drop_disc(self, slot: int):
         self.players[self.turn].drop_disc(slot)
         self.turn = ~self.turn
+        return self.win_logic()
+
+    def win_logic(self):
+        # Vertical
+        for i in self.board.slots:
+            if len(i) < 4:
+                continue
+            color = i.holes[0].color
+            count = 1
+            for j in range(1, len(i)):
+                if color == i.holes[j].color:
+                    count += 1
+                else:
+                    color = i.holes[j].color
+                    count = 1
+                if count >= 4:
+                    return True
+        # Horizontal
+        for i in range(self.board.max_depth):
+            color = None
+            count = 0
+            for j in range(1, self.board.max_slots):
+                if self.board.slots[j].holes[i] is None:
+                    count = 0
+                    color = None
+                elif color == self.board.slots[j].holes[i].color:
+                    count += 1
+                else:
+                    color = self.board.slots[j].holes[i].color
+                    count = 1
+                if count >= 4:
+                    return True
+        return False
