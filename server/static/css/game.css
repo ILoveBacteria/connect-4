@@ -27,9 +27,6 @@ div#app {
     width: 4rem;
     height: 4rem;
     box-shadow: rgba(0, 0, 0, 0.3) 0 20px 36px -20px inset;
-
-}
-
-.hole_hover {
-    background-color: red !important;
+    border: 2px solid whitesmoke;
+    transition: border 0.2s ease;
 }
