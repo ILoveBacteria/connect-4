@@ -23,6 +23,20 @@ class Slot:
     def __len__(self):
         return len(list(filter(lambda x: x is not None, self.holes)))
 
+    def __getitem__(self, item):
+        return self.holes[item]
+
+    def __iter__(self):
+        self.index = 0
+        return self
+
+    def __next__(self):
+        i = self.index
+        if i >= self.__len__():
+            raise StopIteration
+        self.index += 1
+        return self.holes[i]
+
     def fill(self, disc: Disc) -> int:
         if self.__len__() == self.max_depth:
             raise IndexError('The slot is full!')
@@ -41,9 +55,11 @@ class Game:
         self.players = (player1, player2)
         self.turn = 0
 
+    # TODO: Overload this method
     def drop_disc(self, slot: int) -> (Disc, bool):
         disc = self.players[self.turn].drop_disc(slot)
         self.turn = ~self.turn
+        # TODO: Check the win logic
         return disc, self.win_logic()
 
     def win_logic(self):
@@ -51,13 +67,13 @@ class Game:
         for i in self.board.slots:
             if len(i) < 4:
                 continue
-            color = i.holes[0].color
+            color = i[0].color
             count = 1
-            for j in range(1, len(i)):
-                if color == i.holes[j].color:
+            for disc in i:
+                if color == disc.color:
                     count += 1
                 else:
-                    color = i.holes[j].color
+                    color = disc.color
                     count = 1
                 if count >= 4:
                     return True
@@ -66,13 +82,13 @@ class Game:
             color = None
             count = 0
             for j in range(1, self.board.max_slots):
-                if self.board.slots[j].holes[i] is None:
+                if self.board.slots[j][i] is None:
                     count = 0
                     color = None
-                elif color == self.board.slots[j].holes[i].color:
+                elif color == self.board.slots[j][i].color:
                     count += 1
                 else:
-                    color = self.board.slots[j].holes[i].color
+                    color = self.board.slots[j][i].color
                     count = 1
                 if count >= 4:
                     return True
