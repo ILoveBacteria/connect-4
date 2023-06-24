@@ -1,5 +1,6 @@
-from connect_4.game import Board
+from connect_4.game import Board, Disc
 import math
+import copy
 
 
 def heuristic(board: Board, max_color: str):
@@ -116,48 +117,58 @@ def count_connect_3_horizontal_one_adjacent(board: Board, color: str) -> int:
 
 # This function generates available actions for a state
 def action_space(board: Board) -> list:
-    pass
+    action_space_list = []
+    for i, slot in enumerate(board):
+        if len(slot) < board.max_depth:
+            action_space_list.append(i)
+    return action_space_list
 
 
 # Applies actions to a state
-def successors(board: Board, actions: list) -> list:
-    pass
+def successors(board: Board, color: str) -> list:
+    new_states = []
+    for column in action_space(board):
+        board_copy = copy.deepcopy(board)
+        i = board_copy[column].fill(Disc(color, column=column))
+        board_copy[column][i].row = i
+        new_states.append((board_copy, column))
+    return new_states
 
 
 class AlphaBetaPruning:
-    def __init__(self, initial_state: Board, cut_off_depth=3):
+    def __init__(self, initial_state: Board, max_color: str, cut_off_depth=3):
         self.initial_state = initial_state
         self.cut_off_depth = cut_off_depth
+        self.max_color = max_color
 
-    def search(self):
-        value, best_state = self.__max_value(self.initial_state, -10, 10, 0)
-        return value, best_state
+    def search(self) -> (int, int):
+        value, action = self.__max_value(self.initial_state, -1 * math.inf, math.inf, 0)
+        return value, action
 
-    def __max_value(self, state, alpha, beta, depth) -> (int, Board):
+    def __max_value(self, state, alpha, beta, depth) -> (int, int):
         if depth >= self.cut_off_depth:
-            # TODO: return action or what
-            return heuristic(state), state
-        best_state = None
-        for i in successors(state, action_space(state)):
-            value, _ = self.__min_value(i, alpha, beta, depth + 1)
+            return heuristic(state, self.max_color), None
+        best_action = None
+        for successor, action in successors(state):
+            value, _ = self.__min_value(successor, alpha, beta, depth + 1)
             if value > alpha:
                 alpha = value
-                best_state = i
+                best_action = action
             if alpha >= beta:
                 # Pruning
-                return alpha, best_state
-        return alpha, best_state
+                return alpha, best_action
+        return alpha, best_action
 
-    def __min_value(self, state, alpha, beta, depth) -> (int, Board):
+    def __min_value(self, state, alpha, beta, depth) -> (int, int):
         if depth >= self.cut_off_depth:
-            return heuristic(state), state
-        best_state = None
-        for i in successors(state, action_space(state)):
-            value, _ = self.__max_value(i, alpha, beta, depth + 1)
+            return heuristic(state), None
+        best_action = None
+        for successor, action in successors(state):
+            value, _ = self.__max_value(successor, alpha, beta, depth + 1)
             if value < beta:
                 beta = value
-                best_state = i
+                best_action = action
             if alpha >= beta:
                 # Pruning
-                return beta, best_state
-        return beta, best_state
+                return beta, best_action
+        return beta, best_action
