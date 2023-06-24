@@ -8,6 +8,9 @@ class Player(ABC):
         self.color = color
         self.board = None
 
+    def __eq__(self, value):
+        return isinstance(value, Player) and self.name == value.name and self.color == value.color
+
     @abstractmethod
     def drop_disc(self, slot: int) -> (int, int):
         pass
