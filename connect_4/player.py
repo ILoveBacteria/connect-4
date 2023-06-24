@@ -27,6 +27,6 @@ class HumanAgent(Player):
 
     def drop_disc(self, slot):
         disc = game.Disc(self.color, column=slot)
-        y = self.board.slots[slot].fill(disc)
+        y = self.board[slot].fill(disc)
         disc.row = y
         return disc
