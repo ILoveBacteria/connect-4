@@ -2,3 +2,5 @@
 /node_modules/
 /server/static/compiled/
 /server/static/dist/
+/__pycache__/
+/*/__pycache__/
