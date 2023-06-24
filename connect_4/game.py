@@ -14,6 +14,23 @@ class Board:
         self.max_depth = max_depth
         self.slots = [Slot(max_depth) for _ in range(max_slots)]
 
+    def __iter__(self):
+        self.index = 0
+        return self
+    
+    def __next__(self):
+        i = self.index
+        if i >= self.max_slots:
+            raise StopIteration
+        self.index += 1
+        return self.slots[i]
+    
+    def __getitem__(self, item):
+        return self.slots[item]
+    
+    def __len__(self):
+        return self.max_slots
+
 
 class Slot:
     def __init__(self, max_depth: int):
