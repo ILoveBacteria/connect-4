@@ -41,6 +41,9 @@ class Disc:
         self.row = row
         self.column = column
 
+    def __repr__(self):
+        return f'{self.color}({self.row},{self.column})'
+
 
 class Board:
     def __init__(self, max_slots: int, max_depth: int):
@@ -65,6 +68,9 @@ class Board:
     def __len__(self):
         return self.max_slots
 
+    def __repr__(self):
+        return str(self.slots)
+
 
 class Slot:
     def __init__(self, max_depth: int):
@@ -87,6 +93,9 @@ class Slot:
             raise StopIteration
         self.index += 1
         return self.holes[i]
+
+    def __repr__(self):
+        return str(self.holes)
 
     def fill(self, disc: Disc) -> int:
         if self.__len__() == self.max_depth:
