@@ -23,8 +23,12 @@ class AIAgent(Player):
     def __init__(self, color):
         super(AIAgent, self).__init__('AI', color)
 
-    def drop_disc(self, slot) -> (int, int):
-        pass
+    def drop_disc(self, slot=None) -> (int, int):
+        _, action = AlphaBetaPruning(self.board, self.color).search()
+        disc = Disc(self.color, column=action)
+        y = self.board[action].fill(disc)
+        disc.row = y
+        return disc
 
 
 class HumanAgent(Player):
@@ -114,7 +118,8 @@ class Game:
         self.board = Board(slots, depth)
         if isinstance(player1, AIAgent):
             self.mode = 'single'
-        self.mode = 'multi'
+        else:
+            self.mode = 'multi'
         player1.board = self.board
         player2.board = self.board
         self.players = (player1, player2)
@@ -123,7 +128,7 @@ class Game:
     def __dict__(self):
         return {
             'mode': self.mode,
-            'players': [vars(i) for i in self.players],
+            'players': [i.__dict__() for i in self.players],
             'turn': self.turn
         }
 
@@ -148,4 +153,4 @@ class Game:
         return None
 
 
-from .ai.adversarial import is_connect_4
+from .ai.adversarial import is_connect_4, AlphaBetaPruning
