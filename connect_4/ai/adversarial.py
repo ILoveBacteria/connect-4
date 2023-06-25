@@ -58,14 +58,14 @@ def count_connect_3_horizontal_two_adjacent(board: Board, color: str) -> bool:
             # Check if the bottom of empty hole is empty or not
             if i == 0:
                 if (slot[i] is None and count == 0) or (slot[i] is None and count == 4) or (
-                        slot[i].color == color and count >= 1):
+                        slot[i] is not None and slot[i].color == color and count >= 1):
                     count += 1
                 else:
                     count = 0
             else:
                 if (slot[i - 1] is not None and slot[i] is None and count == 0) or (
                         slot[i - 1] is not None and slot[i] is None and count == 4) or (
-                        slot[i].color == color and count >= 1):
+                        slot[i] is not None and slot[i].color == color and count >= 1):
                     count += 1
                 else:
                     count = 0
@@ -83,12 +83,13 @@ def count_connect_3_horizontal_one_adjacent(board: Board, color: str) -> int:
         for slot in board:
             # Check if the bottom of empty hole is empty or not
             if i == 0:
-                if (slot[i] is None and count == 3) or (slot[i].color == color):
+                if (slot[i] is None and count == 3) or (slot[i] is not None and slot[i].color == color):
                     count += 1
                 else:
                     count = 0
             else:
-                if (slot[i - 1] is not None and slot[i] is None and count == 3) or (slot[i].color == color):
+                if (slot[i - 1] is not None and slot[i] is None and count == 3) or (
+                        slot[i] is not None and slot[i].color == color):
                     count += 1
                 else:
                     count = 0
@@ -99,13 +100,13 @@ def count_connect_3_horizontal_one_adjacent(board: Board, color: str) -> int:
         for slot in board:
             # Check if the bottom of empty hole is empty or not
             if i == 0:
-                if (slot[i] is None and count == 0) or (slot[i].color == color and count >= 1):
+                if (slot[i] is None and count == 0) or (slot[i] is not None and slot[i].color == color and count >= 1):
                     count += 1
                 else:
                     count = 0
             else:
                 if (slot[i - 1] is not None and slot[i] is None and count == 0) or (
-                        slot[i].color == color and count >= 1):
+                        slot[i] is not None and slot[i].color == color and count >= 1):
                     count += 1
                 else:
                     count = 0
