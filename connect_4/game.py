@@ -11,14 +11,17 @@ class Player(ABC):
     def __eq__(self, value):
         return isinstance(value, Player) and self.name == value.name and self.color == value.color
 
+    def __dict__(self):
+        return {'name': self.name, 'color': self.color}
+
     @abstractmethod
     def drop_disc(self, slot: int) -> (int, int):
         pass
 
 
 class AIAgent(Player):
-    def __init__(self):
-        super(AIAgent, self).__init__('AI', 'Blue')
+    def __init__(self, color):
+        super(AIAgent, self).__init__('AI', color)
 
     def drop_disc(self, slot) -> (int, int):
         pass
@@ -106,14 +109,22 @@ class Slot:
 
 
 class Game:
-    def __init__(self, player1: HumanAgent, player2=None, slots=7, depth=6):
+    def __init__(self, player1: Player, player2: Player, slots=7, depth=6):
         self.board = Board(slots, depth)
-        if player2 is None:
-            player2 = AIAgent()
+        if isinstance(player1, AIAgent):
+            self.mode = 'single'
+        self.mode = 'multi'
         player1.board = self.board
         player2.board = self.board
         self.players = (player1, player2)
         self.turn = 0
+
+    def __dict__(self):
+        return {
+            'mode': self.mode,
+            'players': [vars(i) for i in self.players],
+            'turn': self.turn
+        }
 
     @dispatch(int)
     def drop_disc(self, slot: int) -> Disc:
