@@ -104,6 +104,7 @@ class Slot:
         if self.__len__() == self.max_depth:
             raise IndexError('The slot is full!')
         i = self.holes.index(None)
+        # noinspection PyTypeChecker
         self.holes[i] = disc
         return i
 
