@@ -11,7 +11,7 @@ def hello_world():
 @app.route('/game/play')
 def play_game():
     if game is None:
-        redirect(url_for('new_game_get'))
+        return redirect(url_for('new_game_get'))
     return render_template('game.html')
 
 
@@ -23,9 +23,9 @@ def new_game_get():
 @app.post('/game/new_game')
 def new_game_post():
     global game
-    if request.form['mode'] == 'single':
+    if request.json['mode'] == 'single':
         game = Game(AIAgent(color2), HumanAgent('p1', color1))
-    elif request.form['mode'] == 'multi':
+    elif request.json['mode'] == 'multi':
         game = Game(HumanAgent('p1', color1), HumanAgent('p2', color2))
     else:
         abort(400)
@@ -42,7 +42,7 @@ def drop_disc(slot):
 
 
 @app.route('/api/game_info')
-def drop_disc():
+def game_info():
     if game is None:
         return 'Game has not been created!', 404
     return jsonify(vars(game))
