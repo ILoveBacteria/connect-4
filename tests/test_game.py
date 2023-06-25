@@ -1,6 +1,5 @@
 import unittest
-from connect_4.game import Game
-from connect_4.player import HumanAgent
+from connect_4.game import Game, HumanAgent
 
 
 class MyTestCase(unittest.TestCase):

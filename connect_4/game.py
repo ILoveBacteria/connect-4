@@ -1,5 +1,38 @@
-from connect_4 import player
+from abc import abstractmethod, ABC
 from multipledispatch import dispatch
+
+
+class Player(ABC):
+    def __init__(self, name: str, color: str):
+        self.name = name
+        self.color = color
+        self.board = None
+
+    def __eq__(self, value):
+        return isinstance(value, Player) and self.name == value.name and self.color == value.color
+
+    @abstractmethod
+    def drop_disc(self, slot: int) -> (int, int):
+        pass
+
+
+class AIAgent(Player):
+    def __init__(self):
+        super(AIAgent, self).__init__('AI', 'Blue')
+
+    def drop_disc(self, slot) -> (int, int):
+        pass
+
+
+class HumanAgent(Player):
+    def __init__(self, name: str, color: str):
+        super(HumanAgent, self).__init__(name, color)
+
+    def drop_disc(self, slot):
+        disc = Disc(self.color, column=slot)
+        y = self.board[slot].fill(disc)
+        disc.row = y
+        return disc
 
 
 class Disc:
@@ -64,10 +97,10 @@ class Slot:
 
 
 class Game:
-    def __init__(self, player1: player.HumanAgent, player2=None, slots=7, depth=6):
+    def __init__(self, player1: HumanAgent, player2=None, slots=7, depth=6):
         self.board = Board(slots, depth)
         if player2 is None:
-            player2 = player.AIAgent()
+            player2 = AIAgent()
         player1.board = self.board
         player2.board = self.board
         self.players = (player1, player2)
@@ -87,7 +120,7 @@ class Game:
             self.turn = ~self.turn
         return disc
 
-    def win(self) -> player.Player | None:
+    def win(self) -> Player | None:
         for p in self.players:
             if is_connect_4(self.board, p.color):
                 return p
