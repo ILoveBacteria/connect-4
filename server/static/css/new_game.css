@@ -1,0 +1,49 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: rgb(34, 193, 195);
+    background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(218, 188, 69, 1) 50%, rgba(253, 187, 45, 1) 100%);
+}
+
+#form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#mode {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-bottom: 5rem;
+    width: 100%;
+}
+
+button {
+    width: 18%;
+}
+
+.mode-button {
+    border-radius: 3rem;
+    border: 2px solid rgba(220, 220, 220, 0.7);
+    width: 20rem;
+    height: 20rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    font-weight: 700;
+    backdrop-filter: blur(20px);
+    background-color: rgba(220, 220, 220, 0.15);
+    cursor: pointer;
+}
+
+div#app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
