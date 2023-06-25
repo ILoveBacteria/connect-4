@@ -1,5 +1,5 @@
 from connect_4 import player
-from ai.adversarial import is_connect_4
+from multipledispatch import dispatch
 
 
 class Disc:
@@ -18,17 +18,17 @@ class Board:
     def __iter__(self):
         self.index = 0
         return self
-    
+
     def __next__(self):
         i = self.index
         if i >= self.max_slots:
             raise StopIteration
         self.index += 1
         return self.slots[i]
-    
+
     def __getitem__(self, item):
         return self.slots[item]
-    
+
     def __len__(self):
         return self.max_slots
 
@@ -73,15 +73,25 @@ class Game:
         self.players = (player1, player2)
         self.turn = 0
 
-    # TODO: Overload this method
-    def drop_disc(self, slot: int) -> (Disc, bool):
+    @dispatch(int)
+    def drop_disc(self, slot: int) -> Disc:
         disc = self.players[self.turn].drop_disc(slot)
         self.turn = ~self.turn
-        # TODO: Check the win logic
-        return disc, self.win_logic()
+        return disc
 
-    def win_logic(self) -> player.Player|None:
+    @dispatch(list)
+    def drop_disc(self, slots: list) -> list:
+        disc = []
+        for slot in slots:
+            self.players[self.turn].drop_disc(slot)
+            self.turn = ~self.turn
+        return disc
+
+    def win(self) -> player.Player | None:
         for p in self.players:
             if is_connect_4(self.board, p.color):
                 return p
         return None
+
+
+from .ai.adversarial import is_connect_4
