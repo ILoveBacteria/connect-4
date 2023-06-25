@@ -57,21 +57,20 @@ def count_connect_3_horizontal_two_adjacent(board: Board, color: str) -> bool:
         for slot in board:
             # Check if the bottom of empty hole is empty or not
             if i == 0:
-                if (slot[i] is None and count == 0) or \
-                        (slot[i] is None and count == 4) or \
-                            (slot[i].color == color and count >= 1):
+                if (slot[i] is None and count == 0) or (slot[i] is None and count == 4) or (
+                        slot[i].color == color and count >= 1):
                     count += 1
                 else:
                     count = 0
             else:
-                if (slot[i - 1] is not None and slot[i] is None and count == 0) or \
-                        (slot[i - 1] is not None and slot[i] is None and count == 4) or \
-                            (slot[i].color == color and count >= 1):
+                if (slot[i - 1] is not None and slot[i] is None and count == 0) or (
+                        slot[i - 1] is not None and slot[i] is None and count == 4) or (
+                        slot[i].color == color and count >= 1):
                     count += 1
                 else:
                     count = 0
             if count == 5:
-               return True
+                return True
     return False
 
 
@@ -89,7 +88,7 @@ def count_connect_3_horizontal_one_adjacent(board: Board, color: str) -> int:
                 else:
                     count = 0
             else:
-                if (slot[i - 1] is not None slot[i] is None and count == 3) or (slot[i].color == color):
+                if (slot[i - 1] is not None and slot[i] is None and count == 3) or (slot[i].color == color):
                     count += 1
                 else:
                     count = 0
@@ -105,7 +104,8 @@ def count_connect_3_horizontal_one_adjacent(board: Board, color: str) -> int:
                 else:
                     count = 0
             else:
-                if (slot[i - 1] is not None and slot[i] is None and count == 0) or (slot[i].color == color and count >= 1):
+                if (slot[i - 1] is not None and slot[i] is None and count == 0) or (
+                        slot[i].color == color and count >= 1):
                     count += 1
                 else:
                     count = 0
@@ -149,7 +149,7 @@ class AlphaBetaPruning:
         if depth >= self.cut_off_depth:
             return heuristic(state, self.max_color), None
         best_action = None
-        for successor, action in successors(state):
+        for successor, action in successors(state, self.max_color):
             value, _ = self.__min_value(successor, alpha, beta, depth + 1)
             if value > alpha:
                 alpha = value
@@ -161,9 +161,9 @@ class AlphaBetaPruning:
 
     def __min_value(self, state, alpha, beta, depth) -> (int, int):
         if depth >= self.cut_off_depth:
-            return heuristic(state), None
+            return heuristic(state, self.max_color), None
         best_action = None
-        for successor, action in successors(state):
+        for successor, action in successors(state, self.max_color):
             value, _ = self.__max_value(successor, alpha, beta, depth + 1)
             if value < beta:
                 beta = value
