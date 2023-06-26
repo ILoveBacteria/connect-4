@@ -49,7 +49,11 @@ class MyTestCase(unittest.TestCase):
         self.game.drop_disc([0, 1, 3, 1, 4, 1, 5, 0, 3, 0, 4, 3, 5, 4])
         self.assertEqual(1, count_connect_3_horizontal_two_adjacent(self.game.board, self.player1.color))
 
-    def test_count_connect_3_horizontal_one_adjacent(self):
+    def test_count_connect_3_horizontal_one_adjacent1(self):
+        self.game.drop_disc([0, 3, 1, 3, 4, 4, 6, 6, 5])
+        self.assertEqual(0, count_connect_3_horizontal_one_adjacent(self.game.board, self.player1.color))
+
+    def test_count_connect_3_horizontal_one_adjacent2(self):
         self.game.drop_disc([0, 1, 3, 1, 4, 1, 5, 0, 3, 0, 4, 3, 5, 4, 5, 6])
         self.assertEqual(2, count_connect_3_horizontal_one_adjacent(self.game.board, self.player1.color))
         self.game.drop_disc([4, 2, 3, 2])
