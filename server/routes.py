@@ -45,7 +45,7 @@ def drop_disc(slot):
 def game_info():
     if game is None:
         return 'Game has not been created!', 404
-    return jsonify(vars(game))
+    return jsonify(game.__dict__())
 
 
 color1 = '#ffeb3b'

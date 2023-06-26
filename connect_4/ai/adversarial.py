@@ -139,18 +139,19 @@ def successors(board: Board, color: str) -> list:
 
 
 class AlphaBetaPruning:
-    def __init__(self, initial_state: Board, max_color: str, cut_off_depth=3):
+    def __init__(self, initial_state: Board, max_color: str, min_color: str, cut_off_depth=3):
         self.initial_state = initial_state
         self.cut_off_depth = cut_off_depth
         self.max_color = max_color
+        self.min_color = min_color
 
     def search(self) -> (int, int):
-        value, action = self.__max_value(self.initial_state, -1 * math.inf, math.inf, 0)
+        value, action = self.__max_value(self.initial_state, -1000, 1000, 0)
         return value, action
 
     def __max_value(self, state, alpha, beta, depth) -> (int, int):
-        if depth >= self.cut_off_depth or is_connect_4(state, self.max_color):
-            return heuristic(state, self.max_color), None
+        if depth >= self.cut_off_depth or is_connect_4(state, self.max_color) or is_connect_4(state, self.min_color):
+            return heuristic(state, self.max_color) - heuristic(state, self.min_color), None
         best_action = None
         for successor, action in successors(state, self.max_color):
             value, _ = self.__min_value(successor, alpha, beta, depth + 1)
@@ -163,8 +164,8 @@ class AlphaBetaPruning:
         return alpha, best_action
 
     def __min_value(self, state, alpha, beta, depth) -> (int, int):
-        if depth >= self.cut_off_depth or is_connect_4(state, self.max_color):
-            return heuristic(state, self.max_color), None
+        if depth >= self.cut_off_depth or is_connect_4(state, self.max_color) or is_connect_4(state, self.min_color):
+            return heuristic(state, self.max_color) - heuristic(state, self.min_color), None
         best_action = None
         for successor, action in successors(state, self.max_color):
             value, _ = self.__max_value(successor, alpha, beta, depth + 1)

@@ -1,4 +1,4 @@
-from abc import abstractmethod, ABC
+from abc import ABC
 from multipledispatch import dispatch
 
 
@@ -14,32 +14,21 @@ class Player(ABC):
     def __dict__(self):
         return {'name': self.name, 'color': self.color}
 
-    @abstractmethod
     def drop_disc(self, slot: int) -> (int, int):
-        pass
+        disc = Disc(self.color, column=slot)
+        y = self.board[slot].fill(disc)
+        disc.row = y
+        return disc
 
 
 class AIAgent(Player):
     def __init__(self, color):
         super(AIAgent, self).__init__('AI', color)
 
-    def drop_disc(self, slot=None) -> (int, int):
-        _, action = AlphaBetaPruning(self.board, self.color).search()
-        disc = Disc(self.color, column=action)
-        y = self.board[action].fill(disc)
-        disc.row = y
-        return disc
-
 
 class HumanAgent(Player):
     def __init__(self, name: str, color: str):
         super(HumanAgent, self).__init__(name, color)
-
-    def drop_disc(self, slot):
-        disc = Disc(self.color, column=slot)
-        y = self.board[slot].fill(disc)
-        disc.row = y
-        return disc
 
 
 class Disc:
@@ -134,6 +123,11 @@ class Game:
 
     @dispatch(int)
     def drop_disc(self, slot: int) -> Disc:
+        if isinstance(self.players[self.turn], AIAgent):
+            _, slot = AlphaBetaPruning(self.board,
+                                       max_color=self.players[self.turn].color,
+                                       min_color=self.players[~self.turn].color,
+                                       cut_off_depth=1).search()
         disc = self.players[self.turn].drop_disc(slot)
         self.turn = ~self.turn
         return disc
