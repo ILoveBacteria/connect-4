@@ -1,11 +1,11 @@
 from connect_4.game import Board, Disc
-import math
 import copy
+from random import shuffle
 
 
 def heuristic(board: Board, max_color: str):
     if is_connect_4(board, max_color) or count_connect_3_horizontal_two_adjacent(board, max_color):
-        return math.inf
+        return 1000
     return (count_connect_3_horizontal_one_adjacent(board, max_color) + count_connect_3_vertical(board, max_color)) * 9
 
 
@@ -78,8 +78,8 @@ def count_connect_3_horizontal_one_adjacent(board: Board, color: str) -> int:
     sum_of_connects = 0
     # Horizontal connect. Holes should be like this: * * * _ or _ * * *
     for i in range(board.max_depth):
-        count = 0
         # * * * _
+        count = 0
         for slot in board:
             # Check if the bottom of empty hole is empty or not
             if i == 0:
@@ -97,6 +97,7 @@ def count_connect_3_horizontal_one_adjacent(board: Board, color: str) -> int:
                 sum_of_connects += 1
                 count = 0
         # _ * * *
+        count = 0
         for slot in board:
             # Check if the bottom of empty hole is empty or not
             if i == 0:
@@ -122,6 +123,7 @@ def action_space(board: Board) -> list:
     for i, slot in enumerate(board):
         if len(slot) < board.max_depth:
             action_space_list.append(i)
+    shuffle(action_space_list)
     return action_space_list
 
 
@@ -147,7 +149,7 @@ class AlphaBetaPruning:
         return value, action
 
     def __max_value(self, state, alpha, beta, depth) -> (int, int):
-        if depth >= self.cut_off_depth:
+        if depth >= self.cut_off_depth or is_connect_4(state, self.max_color):
             return heuristic(state, self.max_color), None
         best_action = None
         for successor, action in successors(state, self.max_color):
@@ -161,7 +163,7 @@ class AlphaBetaPruning:
         return alpha, best_action
 
     def __min_value(self, state, alpha, beta, depth) -> (int, int):
-        if depth >= self.cut_off_depth:
+        if depth >= self.cut_off_depth or is_connect_4(state, self.max_color):
             return heuristic(state, self.max_color), None
         best_action = None
         for successor, action in successors(state, self.max_color):
