@@ -3,10 +3,15 @@ import copy
 from random import shuffle
 
 
-def heuristic(board: Board, max_color: str):
-    if is_connect_4(board, max_color) or count_connect_3_horizontal_two_adjacent(board, max_color):
+def heuristic(board: Board, color: str):
+    if is_connect_4(board, color) or count_connect_3_horizontal_two_adjacent(board, color):
         return 1000
-    return (count_connect_3_horizontal_one_adjacent(board, max_color) + count_connect_3_vertical(board, max_color)) * 9
+    return (count_connect_3_horizontal_one_adjacent(board, color) +
+            count_connect_3_vertical(board, color) +
+            count_connect_3_horizontal_one_space(board, color)) * 90 + (
+            count_connect_2_vertical(board, color) +
+            count_connect_2_horizontal_two_adjacent(board, color)) * 5 + (
+            count_connect_2_horizontal_one_adjacent(board, color) * 3)
 
 
 def is_connect_4(board: Board, color: str) -> bool:
@@ -108,6 +113,138 @@ def count_connect_3_horizontal_one_adjacent(board: Board, color: str) -> int:
             else:
                 if (slot[i - 1] is not None and slot[i] is None and count == 0) or (
                         slot[i] is not None and slot[i].color == color and count >= 1):
+                    count += 1
+                else:
+                    count = 0
+            if count == 4:
+                sum_of_connects += 1
+                count = 0
+    return sum_of_connects
+
+
+def count_connect_3_horizontal_one_space(board: Board, color: str) -> int:
+    sum_of_connects = 0
+    # Horizontal connect with a space between. Holes should be like this: (* _ * * -) or (- * * _ *)
+    for i in range(board.max_depth):
+        # * _ * *
+        count = 0
+        for slot in board:
+            # Check if the bottom of empty hole is empty or not
+            if i == 0:
+                if (slot[i] is None and count == 1) or (
+                        slot[i] is not None and slot[i].color == color and (count == 0 or 2 <= count <= 3)):
+                    count += 1
+                else:
+                    count = 0
+            else:
+                if (slot[i - 1] is not None and slot[i] is None and count == 1) or (
+                        slot[i] is not None and slot[i].color == color and (count == 0 or 2 <= count <= 3)):
+                    count += 1
+                else:
+                    count = 0
+            if count == 4:
+                sum_of_connects += 1
+                count = 0
+        # * * _ *
+        count = 0
+        for slot in board:
+            # Check if the bottom of empty hole is empty or not
+            if i == 0:
+                if (slot[i] is None and count == 2) or (
+                        slot[i] is not None and slot[i].color == color and (count == 3 or 0 <= count <= 1)):
+                    count += 1
+                else:
+                    count = 0
+            else:
+                if (slot[i - 1] is not None and slot[i] is None and count == 2) or (
+                        slot[i] is not None and slot[i].color == color and (count == 3 or 0 <= count <= 1)):
+                    count += 1
+                else:
+                    count = 0
+            if count == 4:
+                sum_of_connects += 1
+                count = 0
+    return sum_of_connects
+
+
+def count_connect_2_vertical(board: Board, color: str) -> int:
+    sum_of_connects = 0
+    # Vertical connect
+    for slot in board:
+        count = 0
+        for disc in slot:
+            if disc.color == color:
+                count += 1
+            else:
+                count = 0
+        if count == 2 and slot[-1] is None:
+            sum_of_connects += 1
+    return sum_of_connects
+
+
+def count_connect_2_horizontal_two_adjacent(board: Board, color: str) -> int:
+    sum_of_connects = 0
+    # Horizontal connect. Holes should be like this: _ * * _ or _ * * _
+    for i in range(board.max_depth):
+        # _ * * _
+        count = 0
+        for slot in board:
+            # Check if the bottom of empty hole is empty or not
+            if i == 0:
+                if (slot[i] is None and count == 0) or (slot[i] is None and count == 3) or (
+                        slot[i] is not None and slot[i].color == color and count >= 1):
+                    count += 1
+                else:
+                    count = 0
+            else:
+                if (slot[i - 1] is not None and slot[i] is None and count == 0) or (
+                        slot[i - 1] is not None and slot[i] is None and count == 3) or (
+                        slot[i] is not None and slot[i].color == color and count >= 1):
+                    count += 1
+                else:
+                    count = 0
+            if count == 4:
+                sum_of_connects += 1
+                count = 0
+    return sum_of_connects
+
+
+def count_connect_2_horizontal_one_adjacent(board: Board, color: str) -> int:
+    sum_of_connects = 0
+    # Horizontal connect. Holes should be like this: * * _ _ or _ _ * *
+    for i in range(board.max_depth):
+        # * * _ _
+        count = 0
+        for slot in board:
+            # Check if the bottom of empty hole is empty or not
+            if i == 0:
+                if (slot[i] is None and 2 <= count <= 3) or (
+                        slot[i] is not None and slot[i].color == color and count <= 1):
+                    count += 1
+                else:
+                    count = 0
+            else:
+                if (slot[i - 1] is not None and slot[i] is None and 2 <= count <= 3) or (
+                        slot[i] is not None and slot[i].color == color and count <= 1):
+                    count += 1
+                else:
+                    count = 0
+            if count == 4:
+                sum_of_connects += 1
+                count = 0
+        # _ _ * *
+        count = 0
+        for slot in board:
+            # Check if the bottom of empty hole is empty or not
+            if i == 0:
+                if (slot[i] is None and 0 <= count <= 1) or (
+                        slot[i] is not None and slot[i].color == color and count >= 2):
+                    count += 1
+                else:
+                    count = 0
+            else:
+                if (slot[i - 1] is not None and slot[i] is None and 0 <= count <= 1) or (
+                        slot[i] is not None and slot[i].color == color and count >= 2):
                     count += 1
                 else:
                     count = 0
