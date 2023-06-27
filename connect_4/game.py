@@ -12,7 +12,7 @@ class Player(ABC):
         return isinstance(value, Player) and self.name == value.name and self.color == value.color
 
     def __dict__(self):
-        return {'name': self.name, 'color': self.color}
+        return {'name': self.name, 'color': self.color, 'instance': self.__class__.__name__}
 
     def drop_disc(self, slot: int) -> (int, int):
         disc = Disc(self.color, column=slot)

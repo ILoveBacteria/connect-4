@@ -7,11 +7,24 @@ div#app {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    width: 100%;
+}
+
+div#app div {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    width: 100%;
+}
+
+#player-cards {
+    display: flex;
+    flex-direction: column !important;
 }
 
 #board {
     background-color: lightblue;
-    display: grid;
+    display: grid !important;
     grid-template-columns: repeat(7, 1fr);
     border-radius: 1rem;
     row-gap: 2rem;
@@ -24,9 +37,23 @@ div#app {
 .hole {
     border-radius: 100%;
     background-color: white;
-    width: 4rem;
-    height: 4rem;
+    width: 4rem !important;
+    height: 4rem !important;
     box-shadow: rgba(0, 0, 0, 0.3) 0 20px 36px -20px inset;
     border: 2px solid whitesmoke;
     transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.player-card {
+    border-radius: 1rem;
+    border: 1px solid;
+    max-width: 20rem;
+    margin-bottom: 5rem;
+    padding: 1rem 2rem 1rem 2rem;
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+
+div.player-card span {
+    margin-right: 1rem;
 }

@@ -11,7 +11,7 @@ export class StartButton extends React.Component {
             return (
                 <button className={class_.join(' ')} type="button">
                     <span className="spinner-border spinner-border-sm" role="status"></span>
-                    <span style={{'marginLeft': '0.5rem'}}>Starting Game...</span>
+                    <span style={{marginLeft: '0.5rem'}}>Starting Game...</span>
                 </button>
             );
         }
