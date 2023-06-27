@@ -1,6 +1,7 @@
 from connect_4.game import Board, Disc
-import copy
 from random import shuffle
+import copy
+import logging
 
 
 def heuristic(board: Board, color: str):
@@ -284,14 +285,22 @@ class AlphaBetaPruning:
 
     def search(self) -> (int, int):
         value, action = self.__max_value(self.initial_state, -1000, 1000, 0)
+        logging.debug(f'Minimax result={value} action={action}')
         return value, action
 
     def __max_value(self, state, alpha, beta, depth) -> (int, int):
-        if depth >= self.cut_off_depth or is_connect_4(state, self.max_color) or is_connect_4(state, self.min_color):
-            return heuristic(state, self.max_color) - heuristic(state, self.min_color), None
+        utility = self.__utility(state, depth)
+        logging.debug(f'in max: depth={depth} utility={utility}')
+        if utility is not None:
+            return utility
         best_action = None
+        default_action = None  # If the final returning action is None, this default action will be replaced
         for successor, action in successors(state, self.max_color):
+            default_action = default_action if default_action else action
+            logging.debug(f'in max: depth={depth} selected-action={action}')
             value, _ = self.__min_value(successor, alpha, beta, depth + 1)
+            logging.debug(f'in max: depth={depth} alpha={alpha} beta={beta} '
+                          f'value={value} action={action} best-action={best_action}')
             if value > alpha:
                 alpha = value
                 best_action = action
@@ -301,11 +310,18 @@ class AlphaBetaPruning:
         return alpha, best_action
 
     def __min_value(self, state, alpha, beta, depth) -> (int, int):
-        if depth >= self.cut_off_depth or is_connect_4(state, self.max_color) or is_connect_4(state, self.min_color):
-            return heuristic(state, self.max_color) - heuristic(state, self.min_color), None
+        utility = self.__utility(state, depth)
+        logging.debug(f'in min: depth={depth} utility={utility}')
+        if utility is not None:
+            return utility
         best_action = None
-        for successor, action in successors(state, self.max_color):
+        default_action = None  # If the final returning action is None, this default action will be replaced
+        for successor, action in successors(state, self.min_color):
+            default_action = default_action if default_action else action
+            logging.debug(f'in min: depth={depth} selected-action={action}')
             value, _ = self.__max_value(successor, alpha, beta, depth + 1)
+            logging.debug(f'in min: depth={depth} alpha={alpha} beta={beta} '
+                          f'value={value} action={action} best-action={best_action}')
             if value < beta:
                 beta = value
                 best_action = action
@@ -313,3 +329,12 @@ class AlphaBetaPruning:
                 # Pruning
                 return beta, best_action
         return beta, best_action
+
+    def __utility(self, state, depth) -> (int, int):
+        if depth >= self.cut_off_depth:
+            return heuristic(state, self.max_color) - heuristic(state, self.min_color), None
+        if is_connect_4(state, self.max_color):
+            return 1000, None
+        if is_connect_4(state, self.min_color):
+            return -1 * 1000, None
+        return None
