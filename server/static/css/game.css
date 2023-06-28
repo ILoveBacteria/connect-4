@@ -49,11 +49,17 @@ div#app div {
     border: 1px solid;
     max-width: 20rem;
     margin-bottom: 5rem;
-    padding: 0.7rem 2rem 0.7rem 2rem;
+    padding: 0.7rem 1.5rem 0.7rem 1.5rem;
     font-weight: 500;
     font-size: 1.5rem;
+    display: flex;
+    justify-content: space-between;
 }
 
-div.player-card span {
+div.player-card span.agent-icon {
     margin-right: 1rem;
+}
+
+#arrow-icon {
+    color: hsl(200deg, 100%, 62%);
 }
