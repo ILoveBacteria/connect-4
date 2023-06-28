@@ -296,7 +296,7 @@ class AlphaBetaPruning:
         best_action = None
         default_action = None  # If the final returning action is None, this default action will be replaced
         for successor, action in successors(state, self.max_color):
-            default_action = default_action if default_action else action
+            default_action = action if default_action is None else default_action
             logging.debug(f'in max: depth={depth} selected-action={action}')
             value, _ = self.__min_value(successor, alpha, beta, depth + 1)
             logging.debug(f'in max: depth={depth} alpha={alpha} beta={beta} '
@@ -307,7 +307,7 @@ class AlphaBetaPruning:
             if alpha >= beta:
                 # Pruning
                 return alpha, best_action
-        return alpha, best_action
+        return alpha, default_action if best_action is None else best_action
 
     def __min_value(self, state, alpha, beta, depth) -> (int, int):
         utility = self.__utility(state, depth)
@@ -317,7 +317,7 @@ class AlphaBetaPruning:
         best_action = None
         default_action = None  # If the final returning action is None, this default action will be replaced
         for successor, action in successors(state, self.min_color):
-            default_action = default_action if default_action else action
+            default_action = action if default_action is None else default_action
             logging.debug(f'in min: depth={depth} selected-action={action}')
             value, _ = self.__max_value(successor, alpha, beta, depth + 1)
             logging.debug(f'in min: depth={depth} alpha={alpha} beta={beta} '
@@ -328,7 +328,7 @@ class AlphaBetaPruning:
             if alpha >= beta:
                 # Pruning
                 return beta, best_action
-        return beta, best_action
+        return beta, default_action if best_action is None else best_action
 
     def __utility(self, state, depth) -> (int, int):
         if depth >= self.cut_off_depth:
