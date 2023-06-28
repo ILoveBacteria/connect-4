@@ -38,7 +38,9 @@ def drop_disc(slot):
         return 'Game has not been created!', 404
     # noinspection PyUnresolvedReferences
     disc = game.drop_disc(slot)
-    return jsonify(vars(disc))
+    response = vars(disc)
+    response['turn'] = game.turn
+    return jsonify(response)
 
 
 @app.route('/api/game_info')

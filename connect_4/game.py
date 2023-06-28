@@ -129,7 +129,7 @@ class Game:
                                        min_color=self.players[~self.turn].color,
                                        cut_off_depth=1).search()
         disc = self.players[self.turn].drop_disc(slot)
-        self.turn = ~self.turn
+        self.turn = self.turn ^ 1
         return disc
 
     @dispatch(list)
