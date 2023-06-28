@@ -15,7 +15,7 @@ class App extends React.Component {
             }
             disc_color.push(row);
         }
-        this.state = {mode: null, players: null, turn: null, disc_color: disc_color};
+        this.state = {mode: null, players: null, turn: null, spinner: false, disc_color: disc_color};
         this.get_game_info();
     }
 
@@ -29,21 +29,24 @@ class App extends React.Component {
     }
 
     drop_disc = async (column) => {
+        this.setState({spinner: true});
         let response = await fetch(`/api/drop_disc/${column}`);
         if (!response.ok) {
             throw 'The response code is not OK!';
         }
         let data = await response.json();
         this.state.disc_color[data.row][data.column] = data.color;
-        this.setState({turn: data.turn});
+        this.setState({turn: data.turn, spinner: false});
     }
 
     render() {
         return (
             <div>
                 <div id="player-cards">
-                    {this.state.players && <PlayerCard player={this.state.players[0]} turn={this.state.turn === 0}/>}
-                    {this.state.players && <PlayerCard player={this.state.players[1]} turn={this.state.turn === 1}/>}
+                    {this.state.players && <PlayerCard player={this.state.players[0]} turn={this.state.turn === 0}
+                                                       spinner={this.state.spinner}/>}
+                    {this.state.players && <PlayerCard player={this.state.players[1]} turn={this.state.turn === 1}
+                                                       spinner={this.state.spinner}/>}
                 </div>
                 <Board mode={this.state.mode} disc_color={this.state.disc_color} drop_disc={this.drop_disc}/>
             </div>

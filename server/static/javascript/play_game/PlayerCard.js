@@ -5,17 +5,25 @@ export function PlayerCard(props) {
     let style = {
         backgroundColor: props.player.color + '32', // 32 is the opacity
         borderColor: props.player.color,
+        transition: 'height 0.2s ease-out',
+    }
+
+    if (props.turn) {
+        style['height'] = '7rem';
     }
 
     let icon = props.player.instance === 'HumanAgent' ? person_icon : ai_icon;
 
     return (
         <div className="player-card" style={style}>
-            <span>
-                <span className="agent-icon">{icon}</span>
-                <span>{props.player.name}</span>
-            </span>
-            <span id="arrow-icon">{props.turn && arrow_icon}</span>
+            <div>
+                <span>
+                    <span className="agent-icon">{icon}</span>
+                    <span>{props.player.name}</span>
+                </span>
+                    <span id="arrow-icon">{props.turn && arrow_icon}</span>
+            </div>
+            {props.turn && props.spinner && <div className="spinner-border" role="status"></div>}
         </div>
     );
 }

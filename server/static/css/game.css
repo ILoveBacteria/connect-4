@@ -13,7 +13,6 @@ div#app {
 div#app div {
     display: flex;
     flex-direction: row;
-    align-items: start;
     width: 100%;
 }
 
@@ -53,13 +52,27 @@ div#app div {
     font-weight: 500;
     font-size: 1.5rem;
     display: flex;
+    flex-direction: column !important;
+    height: 4rem;
+    transition: height 0.2s ease-out;
+}
+
+.player-card div {
+    display: flex;
     justify-content: space-between;
 }
 
-div.player-card span.agent-icon {
+div.player-card div span.agent-icon {
     margin-right: 1rem;
 }
 
 #arrow-icon {
     color: hsl(200deg, 100%, 62%);
+}
+
+.spinner-border {
+    margin-top: 1rem;
+    width: var(--bs-spinner-width) !important;
+    color: hsla(200deg, 0%, 62%, 0.6);
+    /*position: absolute;*/
 }
