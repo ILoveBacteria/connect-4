@@ -57,7 +57,7 @@ div#app div {
     transition: height 0.2s ease-out;
 }
 
-.player-card div {
+.player-card div#agent {
     display: flex;
     justify-content: space-between;
 }
@@ -71,8 +71,18 @@ div.player-card div span.agent-icon {
 }
 
 .spinner-border {
-    margin-top: 1rem;
     width: var(--bs-spinner-width) !important;
     color: hsla(200deg, 0%, 62%, 0.6);
-    /*position: absolute;*/
+}
+
+.status-icon {
+    margin-top: 1rem;
+}
+
+.win-lose-status {
+    font-weight: 400;
+}
+
+.win-lose-status span {
+    margin-right: 1rem;
 }

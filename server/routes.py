@@ -36,10 +36,11 @@ def new_game_post():
 def drop_disc(slot):
     if game is None:
         return 'Game has not been created!', 404
-    # noinspection PyUnresolvedReferences
     disc = game.drop_disc(slot)
+    winner = game.win()
     response = vars(disc)
     response['turn'] = game.turn
+    response['winner'] = winner.__dict__() if winner else None
     return jsonify(response)
 
 
@@ -52,4 +53,4 @@ def game_info():
 
 color1 = '#ffeb3b'
 color2 = '#00bcd4'
-game = None
+game: Game | None = None

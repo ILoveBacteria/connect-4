@@ -15,7 +15,7 @@ class App extends React.Component {
             }
             disc_color.push(row);
         }
-        this.state = {mode: null, players: null, turn: null, spinner: false, disc_color: disc_color};
+        this.state = {mode: null, players: null, turn: null, spinner: false, winner: null, disc_color: disc_color};
         this.get_game_info();
     }
 
@@ -36,7 +36,7 @@ class App extends React.Component {
         }
         let data = await response.json();
         this.state.disc_color[data.row][data.column] = data.color;
-        this.setState({turn: data.turn, spinner: false});
+        this.setState({turn: data.turn, spinner: false, winner: data.winner});
     }
 
     render() {
@@ -44,9 +44,9 @@ class App extends React.Component {
             <div>
                 <div id="player-cards">
                     {this.state.players && <PlayerCard player={this.state.players[0]} turn={this.state.turn === 0}
-                                                       spinner={this.state.spinner}/>}
+                                                       spinner={this.state.spinner} winner={this.state.winner}/>}
                     {this.state.players && <PlayerCard player={this.state.players[1]} turn={this.state.turn === 1}
-                                                       spinner={this.state.spinner}/>}
+                                                       spinner={this.state.spinner} winner={this.state.winner}/>}
                 </div>
                 <Board mode={this.state.mode} disc_color={this.state.disc_color} drop_disc={this.drop_disc}/>
             </div>
