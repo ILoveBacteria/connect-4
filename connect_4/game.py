@@ -14,6 +14,9 @@ class Player(ABC):
     def __dict__(self):
         return {'name': self.name, 'color': self.color, 'instance': self.__class__.__name__}
 
+    def __repr__(self):
+        return f'name={self.name} color={self.color}'
+
     def drop_disc(self, slot: int) -> (int, int):
         disc = Disc(self.color, column=slot)
         y = self.board[slot].fill(disc)
@@ -103,12 +106,13 @@ class Slot:
 
 
 class Game:
-    def __init__(self, player1: Player, player2: Player, slots=7, depth=6):
+    def __init__(self, player1: Player, player2: Player, slots=7, depth=6, ai_mode=None):
         self.board = Board(slots, depth)
-        if isinstance(player1, AIAgent):
-            self.mode = 'single'
-        else:
+        if type(player1) == type(player2):
             self.mode = 'multi'
+        else:
+            self.mode = 'single'
+            self.ai_mode = ai_mode
         player1.board = self.board
         player2.board = self.board
         self.players = (player1, player2)
@@ -123,11 +127,11 @@ class Game:
 
     @dispatch(int)
     def drop_disc(self, slot: int) -> Disc:
-        if isinstance(self.players[self.turn], AIAgent):
+        if isinstance(self.players[self.turn], AIAgent) and self.mode == 'single':
             _, slot = AlphaBetaPruning(self.board,
                                        max_color=self.players[self.turn].color,
                                        min_color=self.players[~self.turn].color,
-                                       cut_off_depth=1).search()
+                                       cut_off_depth=5).search()
         disc = self.players[self.turn].drop_disc(slot)
         self.turn = self.turn ^ 1
         return disc
@@ -146,5 +150,8 @@ class Game:
                 return p
         return None
 
+    def draw(self) -> bool:
+        return len(action_space(self.board)) == 0
 
-from .ai.adversarial import is_connect_4, AlphaBetaPruning
+
+from .ai.adversarial import is_connect_4, AlphaBetaPruning, action_space
