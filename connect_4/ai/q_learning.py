@@ -1,6 +1,7 @@
+import os
+import pandas as pd
 from connect_4.game import Board, Game, AIAgent
 from connect_4.ai.adversarial import action_space
-from . import q_table
 
 
 class QLearningAgent(AIAgent):
@@ -95,3 +96,10 @@ def train(count_games: int):
             agent1.lose()
             agent2.win()
     q_table.to_csv('q_table.csv', index=False)
+
+
+if os.path.exists('q_table.csv'):
+    q_table = pd.read_csv('q_table.csv')
+else:
+    q_table = pd.DataFrame(columns=['state', 'action', 'color', 'quality'])
+train(1)
