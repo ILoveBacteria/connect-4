@@ -50,7 +50,7 @@ def simplify_board(board: Board, color: str) -> State:
 
 def pick_best_action(board: Board, state: State) -> int:
     max_q = q_table[
-        (q_table['state'].apply(lambda x: x == state)) & (q_table['color'] == state.color_number)].sort_values(
+        (q_table['state'].apply(lambda x: x == str(state.board))) & (q_table['color'] == state.color_number)].sort_values(
         by='quality', ascending=False)
     if len(max_q) == 0:
         return action_space(board)[0]
@@ -68,17 +68,17 @@ def calculate_new_q_value(reward: int, sas: list) -> None:
     optimal_future_q = 0
     for i in range(len(sas) - 1, -1, -1):
         state, action, color = sas[i]
-        current_q_value = q_table[(q_table['state'].apply(lambda x: x == state)) & (q_table['action'] == action) & (
+        current_q_value = q_table[(q_table['state'].apply(lambda x: x == str(state))) & (q_table['action'] == action) & (
                 q_table['color'] == color)]
         current_q_value = current_q_value.iat[0, 3] if (exist := len(current_q_value) > 0) else 0
         new_q = (1 - learn_factor) * current_q_value + learn_factor * (reward + discount_factor * optimal_future_q)
         if exist:
-            q_table.loc[(q_table['state'].apply(lambda x: x == state)) & (q_table['action'] == action) & (
+            q_table.loc[(q_table['state'].apply(lambda x: x == str(state))) & (q_table['action'] == action) & (
                     q_table['color'] == color), 'quality'] = new_q
         else:
             q_table.loc[len(q_table.index)] = [state, action, color, new_q]
         optimal_future_q = \
-            q_table[(q_table['state'].apply(lambda x: x == state)) & (q_table['color'] == color)].sort_values(
+            q_table[(q_table['state'].apply(lambda x: x == str(state))) & (q_table['color'] == color)].sort_values(
                 by='quality',
                 ascending=False).iat[0, 3]
         reward = 0
