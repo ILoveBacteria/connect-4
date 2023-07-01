@@ -49,32 +49,38 @@ def simplify_board(board: Board, color: str) -> State:
 
 
 def pick_best_action(board: Board, state: State) -> int:
-    max_q = q_table[(q_table['state'].apply(lambda x: x == state)) & (q_table['color'] == state.color_number)].sort_values(by='quality', ascending=False)
+    max_q = q_table[
+        (q_table['state'].apply(lambda x: x == state)) & (q_table['color'] == state.color_number)].sort_values(
+        by='quality', ascending=False)
     if len(max_q) == 0:
         return action_space(board)[0]
-    if max_q.at[0, 'quality'] >= 0:
-        return max_q.at[0, 'action']
+    if max_q.iat[0, 3] >= 0:
+        return max_q.iat[0, 1]
     actions = action_space(board)
     if len(actions) == len(max_q):
-        return max_q.at[0, 'action']
+        return max_q.iat[0, 1]
     return list(filter(lambda x: len(max_q[max_q['action'] == x]) == 0, actions))[0]
 
 
 def calculate_new_q_value(reward: int, sas: list) -> None:
     discount_factor = 0.5
     learn_factor = 0.5
-    future_q = 0  # TODO: calculate future_q
+    optimal_future_q = 0
     for i in range(len(sas) - 1, -1, -1):
         state, action, color = sas[i]
-        old_q = q_table[(q_table['state'].apply(lambda x: x == state)) & (q_table['action'] == action) & (q_table['color'] == color)]
-        old_q = old_q.at[0, 'quality'] if (exist := len(old_q) > 0) else 0
-        new_q = (1 - learn_factor) * old_q + learn_factor * (reward + discount_factor * future_q)
+        current_q_value = q_table[(q_table['state'].apply(lambda x: x == state)) & (q_table['action'] == action) & (
+                q_table['color'] == color)]
+        current_q_value = current_q_value.iat[0, 3] if (exist := len(current_q_value) > 0) else 0
+        new_q = (1 - learn_factor) * current_q_value + learn_factor * (reward + discount_factor * optimal_future_q)
         if exist:
             q_table.loc[(q_table['state'].apply(lambda x: x == state)) & (q_table['action'] == action) & (
-                        q_table['color'] == color), 'quality'] = new_q
+                    q_table['color'] == color), 'quality'] = new_q
         else:
             q_table.loc[len(q_table.index)] = [state, action, color, new_q]
-        future_q = new_q
+        optimal_future_q = \
+            q_table[(q_table['state'].apply(lambda x: x == state)) & (q_table['color'] == color)].sort_values(
+                by='quality',
+                ascending=False).iat[0, 3]
         reward = 0
 
 
@@ -102,4 +108,3 @@ if os.path.exists('q_table.csv'):
     q_table = pd.read_csv('q_table.csv')
 else:
     q_table = pd.DataFrame(columns=['state', 'action', 'color', 'quality'])
-train(1)
