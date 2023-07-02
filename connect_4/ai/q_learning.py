@@ -13,7 +13,7 @@ class QLearningAgent(AIAgent):
         state = simplify_board(self.board, self.color)
         action = pick_best_action(self.board, state)
         self.state_action_stack.append((state.board, action, state.color_number))
-        return super().drop_disc(action)
+        return super().drop_disc(int(action))
 
     def win(self) -> None:
         calculate_new_q_value(1000, self.state_action_stack)
