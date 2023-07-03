@@ -1,4 +1,5 @@
 from connect_4.game import Game, HumanAgent, AIAgent
+from connect_4.ai.q_learning import QLearningAgent
 from server import app
 from flask import render_template, jsonify, redirect, url_for, request, abort
 
@@ -24,9 +25,9 @@ def new_game_get():
 def new_game_post():
     global game
     if request.json['mode'] == 'single':
-        game = Game(AIAgent(color2), HumanAgent('p1', color1))
+        game = Game(AIAgent(color2), HumanAgent('Player1', color1), ai_mode='minimax')
     elif request.json['mode'] == 'multi':
-        game = Game(HumanAgent('p1', color1), HumanAgent('p2', color2))
+        game = Game(HumanAgent('Player1', color1), HumanAgent('Player2', color2))
     else:
         abort(400)
     return redirect(url_for('play_game'))

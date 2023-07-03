@@ -89,7 +89,7 @@ def train(count_games: int):
     for _ in range(count_games):
         agent1 = QLearningAgent('0')
         agent2 = QLearningAgent('1')
-        game = Game(agent1, agent2)
+        game = Game(player1=agent1, player2=agent2, ai_mode='learning')
         while game.win() is None and not game.draw():
             game.drop_disc(-1)
 

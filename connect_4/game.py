@@ -106,7 +106,7 @@ class Slot:
 
 
 class Game:
-    def __init__(self, player1: Player, player2: Player, slots=7, depth=6, ai_mode=None):
+    def __init__(self, player1: Player, player2: Player, ai_mode: str | None = None, slots=7, depth=6):
         self.board = Board(slots, depth)
         if type(player1) == type(player2):
             self.mode = 'multi'
@@ -127,11 +127,13 @@ class Game:
 
     @dispatch(int)
     def drop_disc(self, slot: int) -> Disc:
-        if isinstance(self.players[self.turn], AIAgent) and self.mode == 'single':
+        if isinstance(self.players[self.turn], AIAgent) and self.ai_mode is None:
+            raise TypeError('AI mode is not specified!')
+        if isinstance(self.players[self.turn], AIAgent) and self.mode == 'single' and self.ai_mode == 'minimax':
             _, slot = AlphaBetaPruning(self.board,
                                        max_color=self.players[self.turn].color,
                                        min_color=self.players[~self.turn].color,
-                                       cut_off_depth=5).search()
+                                       cut_off_depth=3).search()
         disc = self.players[self.turn].drop_disc(slot)
         self.turn = self.turn ^ 1
         return disc
