@@ -62,12 +62,12 @@ class MyTestCase(unittest.TestCase):
     def test_action_space(self):
         self.game.drop_disc([1] * 6)
         self.game.drop_disc([3] * 6)
-        self.assertListEqual([0, 2, 4, 5, 6], action_space(self.game.board))
+        self.assertListEqual([0, 2, 4, 5, 6], action_space(self.game.board, shuffle=False))
 
     def test_successors(self):
         self.game.drop_disc([1] * 6)
         self.game.drop_disc([3] * 6)
-        successors_list = successors(self.game.board, self.player1.color)
+        successors_list = successors(self.game.board, self.player1.color, shuffle=False)
         self.assertEqual(2, successors_list[1][1])
         self.assertEqual(5, len(successors_list))
         # Check the deep copy

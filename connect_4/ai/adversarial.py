@@ -1,5 +1,5 @@
 from connect_4.game import Board, Disc
-from random import shuffle
+import random
 import copy
 import logging
 
@@ -256,19 +256,20 @@ def count_connect_2_horizontal_one_adjacent(board: Board, color: str) -> int:
 
 
 # This function generates available actions for a state
-def action_space(board: Board) -> list:
+def action_space(board: Board, shuffle: bool = True) -> list:
     action_space_list = []
     for i, slot in enumerate(board):
         if len(slot) < board.max_depth:
             action_space_list.append(i)
-    shuffle(action_space_list)
+    if shuffle:
+        random.shuffle(action_space_list)
     return action_space_list
 
 
 # Applies actions to a state
-def successors(board: Board, color: str) -> list:
+def successors(board: Board, color: str, shuffle: bool = True) -> list:
     new_states = []
-    for column in action_space(board):
+    for column in action_space(board, shuffle):
         board_copy = copy.deepcopy(board)
         i = board_copy[column].fill(Disc(color, column=column))
         board_copy[column][i].row = i
