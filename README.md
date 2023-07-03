@@ -8,6 +8,9 @@
 [![Last commit](https://img.shields.io/github/last-commit/ILoveBacteria/connect-4)](https://github.com/ILoveBacteria/connect-4/commits/master)
 [![Workflow](https://img.shields.io/github/pipenv/locked/python-version/ILoveBacteria/connect-4)](https://img.shields.io/github/pipenv/locked/python-version/ILoveBacteria/connect-4)
 [![Workflow](https://img.shields.io/github/actions/workflow/status/ILoveBacteria/connect-4/test.yml?label=test)](https://img.shields.io/github/actions/workflow/status/ILoveBacteria/connect-4/test.yml?label=test)
+[![Workflow](https://img.shields.io/github/actions/workflow/status/ILoveBacteria/connect-4/node_build.yml?label=build+web-app)](https://img.shields.io/github/actions/workflow/status/ILoveBacteria/connect-4/node_build.yml?label=build+web-app)
+
+[![connect-4-gif](https://github.com/ILoveBacteria/connect-4/blob/master/assets/connect-4.gif)](https://github.com/ILoveBacteria/connect-4/blob/master/assets/connect-4.gif)
 
 ## Table of Contents
 
@@ -65,6 +68,8 @@ pipenv run python -m connect_4 train --count-games 10
 
 - [Flask](https://flask.palletsprojects.com/en/)
 - [Pandas](https://pandas.pydata.org/)
+- multipledispatch
+- [typer](https://typer.tiangolo.com/)
 - [React](https://reactjs.org/)
 - [Webpack](https://webpack.js.org/)
 - [Babel](https://babeljs.io/)
