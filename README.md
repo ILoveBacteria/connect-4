@@ -3,12 +3,17 @@
 [![License: MIT](https://img.shields.io/github/license/ILoveBacteria/connect-4)](https://github.com/ILoveBacteria/connect-4/blob/master/LICENSE)
 [![Issues](https://img.shields.io/github/issues/ILoveBacteria/connect-4)](https://github.com/ILoveBacteria/connect-4/issues)
 [![Forks](https://img.shields.io/github/forks/ILoveBacteria/connect-4)](https://github.com/ILoveBacteria/connect-4/network/members)
-[![Stars](https://img.shields.io/github/stars/ILoveBacteria/connect-4)]()
-[![Watchers](https://img.shields.io/github/watchers/ILoveBacteria/connect-4)]()
+![Stars](https://img.shields.io/github/stars/ILoveBacteria/connect-4)
+![Watchers](https://img.shields.io/github/watchers/ILoveBacteria/connect-4)
 [![Last commit](https://img.shields.io/github/last-commit/ILoveBacteria/connect-4)](https://github.com/ILoveBacteria/connect-4/commits/master)
-[![Workflow](https://img.shields.io/github/pipenv/locked/python-version/ILoveBacteria/connect-4)](https://img.shields.io/github/pipenv/locked/python-version/ILoveBacteria/connect-4)
-[![Workflow](https://img.shields.io/github/actions/workflow/status/ILoveBacteria/connect-4/test.yml?label=test)](https://img.shields.io/github/actions/workflow/status/ILoveBacteria/connect-4/test.yml?label=test)
-[![Workflow](https://img.shields.io/github/actions/workflow/status/ILoveBacteria/connect-4/node_build.yml?label=build+web-app)](https://img.shields.io/github/actions/workflow/status/ILoveBacteria/connect-4/node_build.yml?label=build+web-app)
+![python version](https://img.shields.io/github/pipenv/locked/python-version/ILoveBacteria/connect-4?logo=python&logoColor=white)]
+![npm version](https://img.shields.io/badge/npm-8.19-blue?logo=npm&logoColor=white)
+![Workflow](https://img.shields.io/github/actions/workflow/status/ILoveBacteria/connect-4/test.yml?logo=github&label=test)
+![Workflow](https://img.shields.io/github/actions/workflow/status/ILoveBacteria/connect-4/node_build.yml?logo=github&label=build+web-app)
+[![wiki](https://img.shields.io/badge/wiki-read_the_documention-white?logo=github)](https://github.com/ILoveBacteria/connect-4/wiki)
+![GitHub tag](https://img.shields.io/github/v/tag/ILoveBacteria/connect-4?color=lightblue&label=last+tag)
+![GitHub release](https://img.shields.io/github/v/release/ILoveBacteria/connect-4?color=green)
+![GitHub repo size](https://img.shields.io/github/repo-size/ILoveBacteria/connect-4)
 
 [![connect-4-gif](https://github.com/ILoveBacteria/connect-4/blob/master/assets/connect-4.gif)](https://github.com/ILoveBacteria/connect-4/blob/master/assets/connect-4.gif)
 
