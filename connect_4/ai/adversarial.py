@@ -1,7 +1,20 @@
-from connect_4.game import Board, Disc
+from connect_4.game import Board, Disc, AIAgent
 import random
 import copy
 import logging
+
+
+class AlphaBetaAgent(AIAgent):
+    def __init__(self, color: str, min_color: str):
+        super().__init__(color)
+        self.min_color = min_color
+
+    def drop_disc(self, slot: int):
+        _, slot = AlphaBetaPruning(self.board,
+                                   max_color=self.color,
+                                   min_color=self.min_color,
+                                   cut_off_depth=3).search()
+        return super().drop_disc(slot)
 
 
 def heuristic(board: Board, color: str):
