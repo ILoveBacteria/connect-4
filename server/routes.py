@@ -1,3 +1,4 @@
+import os
 from connect_4.game import Game, HumanAgent
 from connect_4.ai.adversarial import AlphaBetaAgent
 from connect_4.ai.q_learning import QLearningAgent
@@ -26,7 +27,11 @@ def new_game_get():
 def new_game_post():
     global game
     if request.json['mode'] == 'single':
-        game = Game(AlphaBetaAgent(color=color2, min_color=color1), HumanAgent('Player1', color1))
+        mode = os.environ.get('AI_MODE', 'adversarial')
+        if mode == 'adversarial':
+            game = Game(AlphaBetaAgent(color=color2, min_color=color1), HumanAgent('Player1', color1))
+        else:
+            game = Game(QLearningAgent(color=color2), HumanAgent('Player1', color1))
     elif request.json['mode'] == 'multi':
         game = Game(HumanAgent('Player1', color1), HumanAgent('Player2', color2))
     else:
