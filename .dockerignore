@@ -1,0 +1,7 @@
+assets/
+.github/
+.idea/
+server/static/compiled/
+server/static/dist/
+node_modules/
+tests/
